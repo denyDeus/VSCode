@@ -16,7 +16,7 @@ MDTextField:
     helper_tetx: 'Forgot Password'
     helper_text_mode: 'persistent' 
     icon_right: 'key'
-    pos_hint: {'center_x':0.5, 'center_y':0.5}
+    pos_hint: {'center_x':0.5, 'center_y':0.4}
     size_hint_x: None
     width: 300
 '''
@@ -32,4 +32,9 @@ class MIZIGOApp(MDApp):
         username = Builder.load_string(username_helper)
         password = Builder.load_string(password_helper)
 
+        screen.add_widget(username)
+        screen.add_widget(password)
+
         return screen
+    
+MIZIGOApp().run()

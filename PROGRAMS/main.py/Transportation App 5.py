@@ -23,3 +23,5 @@ class MIZIGOApp(MDApp):
            print(self.password.text)
 
         return screen
+
+MIZIGOApp().run()

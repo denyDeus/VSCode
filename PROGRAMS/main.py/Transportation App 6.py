@@ -40,3 +40,5 @@ class MIZIGOApp(MDApp):
                
 
         return screen
+    
+MIZIGOApp().run()
