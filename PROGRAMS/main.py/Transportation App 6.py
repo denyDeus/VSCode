@@ -1,44 +1,62 @@
 from kivymd.app import MDApp
-from kivymd.uix.screen import Screen
-from kivymd.uix.button import MDRectangleFlatButton, MDFlatButton
-from kivymd.uix.dialog import MDDialog
 from kivy.lang import Builder
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton
 
-class MIZIGOApp(MDApp):
-    
+KV = '''
+Screen:
+
+    MDTextField:
+        id: username
+        hint_text: "Enter Username"
+        pos_hint: {"center_x": 0.5, "center_y": 0.7}
+        size_hint_x: 0.8
+
+    MDTextField:
+        id: password
+        hint_text: "Enter Password"
+        password: True
+        pos_hint: {"center_x": 0.5, "center_y": 0.6}
+        size_hint_x: 0.8
+
+    MDRaisedButton:
+        text: "Login"
+        pos_hint: {"center_x": 0.5, "center_y": 0.45}
+        on_release: app.check_credentials()
+'''
+
+users = {
+    "admin": "1234",
+    "user": "pass"
+}
+
+class MizigoApp(MDApp):
+    dialog = None
+
     def build(self):
-        self.theme_cls.primary_palette = 'Indigo'
-        self.theme_cls.primary_hue = 'A700'
-        self.theme_cls.theme_style = 'Dark'
+        self.screen = Builder.load_string(KV)
+        return self.screen
 
-        screen = Screen()
+    def check_credentials(self):
+        username = self.screen.ids.username.text
+        password = self.screen.ids.password.text
 
-        button = MDRectangleFlatButton(text='show',
-                                        pos_hint={'center_x':0.5, 'center_y':0.4},
-                                        on_release=self.show_data)
+        if not username or not password:
+            message = "Please enter both username and password."
+        elif username == 'Denis' and password == '1234':
+            message = "Login successful!"
+        else:
+            message = "Invalid credentials."
 
-        self.password = Builder.load_string(self.password)
-        password = Builder.load_string(button)
-
-        def show_data(self, obj):
-            if self.password.text is '':
-                check_string = 'please enter password'
-            else:
-                check_string = self.password.text + 'doesnot exist'
-
-        close_button = MDFlatButton(text='Close', on_release=self.close_dialog)
-        more_button = MDFlatButton(text='More')
-
-        self.dialog = MDDialog(tittle='Password Check',
-                             text='self.password.text',
-                             size_hint=(0.7, 1),
-                             buttons=[close_button, more_button])
+        if not self.dialog:
+            self.dialog = MDDialog(
+                title="Login Status",
+                buttons=[MDFlatButton(text="Close", on_release=self.close_dialog)]
+            )
+        self.dialog.text = message
         self.dialog.open()
 
-        def close_dialog(self, obj):
-               self.dialog.dismiss()
-               
+    def close_dialog(self, obj):
+        self.dialog.dismiss()
 
-        return screen
-    
-MIZIGOApp().run()
+MizigoApp().run()
