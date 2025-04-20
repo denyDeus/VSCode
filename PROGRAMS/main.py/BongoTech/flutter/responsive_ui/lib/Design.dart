@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assests/images/background.png')),
-                  fit: BoxFit.fill 
+                  fit BoxFit.cover, 
               ),
               child: Stack(
                 children: <Widget>[

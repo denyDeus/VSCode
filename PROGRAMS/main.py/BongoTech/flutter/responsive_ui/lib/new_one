@@ -1,0 +1,85 @@
+import 'package:flutter/material.dart';
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  void _login() {
+    if (_formKey.currentState!.validate()) {
+      // TODO: Implement login logic
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Logging in...')),
+      );
+    }
+  }
+
+  void _forgotPassword() {
+    // TODO: Navigate to forgot password screen
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Forgot Password clicked')),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Center(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text("Login", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                SizedBox(height: 24),
+                TextFormField(
+                  controller: emailController,
+                  decoration: InputDecoration(labelText: "Email"),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) return 'Enter email';
+                    if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) return 'Enter valid email';
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16),
+                TextFormField(
+                  controller: passwordController,
+                  decoration: InputDecoration(labelText: "Password"),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) return 'Enter password';
+                    if (value.length < 6) return 'Minimum 6 characters';
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: _forgotPassword,
+                    child: Text("Forgot Password?"),
+                  ),
+                ),
+                SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: _login,
+                  child: Text("Login"),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
