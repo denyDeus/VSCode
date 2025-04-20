@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Userverse UI Quest</title>
+    <!-- Tailwind CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Feather Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        .page-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .gradient-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+        }
+
+        .circle-1 {
+            background: #4f46e5;
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            left: -100px;
+        }
+
+        .circle-2 {
+            background: #7c3aed;
+            width: 300px;
+            height: 300px;
+            bottom: -50px;
+            right: -50px;
+        }
+
+        .circle-3 {
+            background: #2dd4bf;
+            width: 250px;
+            height: 250px;
+            bottom: 30%;
+            left: 20%;
+        }
+
+        .dark-mode .circle-1 {
+            background: #6366f1;
+        }
+
+        .dark-mode .circle-2 {
+            background: #8b5cf6;
+        }
+
+        .dark-mode .circle-3 {
+            background: #0d9488;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="page-background bg-pattern-dots">
+        <div class="gradient-circle circle-1 animate-pulse"></div>
+        <div class="gradient-circle circle-2 animate-pulse"></div>
+        <div class="gradient-circle circle-3 animate-pulse"></div>
+    </div>
+
+    <div id="theme-toggle" class="fixed top-4 right-4 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg z-50 cursor-pointer transition-all hover:shadow-xl">
+        <i data-feather="moon" class="h-5 w-5 text-gray-700 dark:text-gray-300 dark-mode-toggle-icon"></i>
+    </div>
+
+    <div id="app" class="flex justify-center items-center p-4 py-10">
+        <div id="content" class="w-full max-w-md">
+            <!-- Mobile frame wrapper -->
+            <div class="mobile-frame">
+                <div class="mobile-notch"></div>
+                <div class="mobile-content">
+                    <!-- Content will be loaded here -->
+                    <div id="page-content" class="p-2">
+                        <div class="flex justify-center items-center h-full">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    <script>
+        // Initialize Feather icons
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+            
+            // Setup theme toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = document.querySelector('.dark-mode-toggle-icon');
+            
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                
+                if (document.body.classList.contains('dark-mode')) {
+                    feather.replace(themeIcon, { name: 'sun' });
+                } else {
+                    feather.replace(themeIcon, { name: 'moon' });
+                }
+                
+                // Update state if main.js is loaded
+                if (typeof state !== 'undefined') {
+                    state.darkMode = document.body.classList.contains('dark-mode');
+                }
+            });
+
+            // Create particle elements
+            createParticles();
+        });
+
+        // Create floating particles
+        function createParticles() {
+            const numParticles = 20;
+            const container = document.querySelector('.page-background');
+
+            for (let i = 0; i < numParticles; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle', 'float');
+                
+                // Random size between 5px and 15px
+                const size = Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                
+                // Random color
+                const colors = ['#4f46e5', '#7c3aed', '#2dd4bf', '#f59e0b', '#10b981'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.backgroundColor = color;
+                
+                // Random opacity
+                particle.style.opacity = (Math.random() * 0.3 + 0.1).toString();
+                
+                // Random animation delay
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+    </script>
+</body>
+</html> 

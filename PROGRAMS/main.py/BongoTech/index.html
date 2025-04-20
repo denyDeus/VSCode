@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Userverse UI</title>
+    <!-- Tailwind CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Feather Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="userverse-ui/css/styles.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        .page-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .gradient-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+        }
+
+        .circle-1 {
+            background: #4f46e5;
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            left: -100px;
+        }
+
+        .circle-2 {
+            background: #7c3aed;
+            width: 300px;
+            height: 300px;
+            bottom: -50px;
+            right: -50px;
+        }
+
+        .circle-3 {
+            background: #2dd4bf;
+            width: 250px;
+            height: 250px;
+            bottom: 30%;
+            left: 20%;
+        }
+
+        .dark-mode .circle-1 {
+            background: #6366f1;
+        }
+
+        .dark-mode .circle-2 {
+            background: #8b5cf6;
+        }
+
+        .dark-mode .circle-3 {
+            background: #0d9488;
+        }
+
+        /* Toggle switch styles */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-switch label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e2e8f0;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: 0.4s;
+        }
+
+        .toggle-switch label::before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            border-radius: 50%;
+            transition: 0.4s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch input:checked + label {
+            background-color: #4f46e5;
+        }
+
+        .toggle-switch input:checked + label::before {
+            transform: translateX(24px);
+        }
+
+        /* Toast notification styles */
+        .toast-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 9999;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: toast-slide-in 0.3s ease;
+            max-width: 350px;
+        }
+
+        @keyframes toast-slide-in {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes toast-slide-out {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        .toast-slide-out {
+            animation: toast-slide-out 0.3s ease forwards;
+        }
+
+        .toast-success {
+            background-color: #ecfdf5;
+            border-left: 4px solid #10b981;
+            color: #065f46;
+        }
+
+        .toast-error {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            color: #b91c1c;
+        }
+
+        .toast-info {
+            background-color: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            color: #1e40af;
+        }
+
+        .toast-warning {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            color: #92400e;
+        }
+
+        /* Add more custom styles for cards and buttons */
+        .card-hover-subtle {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover-subtle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Loading indicator */
+        .loading-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #4f46e5, #7c3aed, #2dd4bf);
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            animation: loading-bar 1.5s infinite linear;
+            background-size: 200% 100%;
+        }
+
+        @keyframes loading-bar {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+
+        .animate-fade-out {
+            animation: fadeOut 0.3s forwards;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .mobile-frame {
+            background-color: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            margin: 0 auto;
+            position: relative;
+            width: 100%;
+            max-width: 375px;
+            height: 812px; /* Fixed height for consistent phone dimensions */
+            overflow: hidden; /* Prevent content from expanding the frame */
+            border: 12px solid #2d2d2d;
+        }
+
+        .mobile-notch {
+            background-color: #2d2d2d;
+            border-radius: 0 0 1.5rem 1.5rem;
+            height: 30px;
+            left: 50%;
+            position: absolute;
+            top: 0;
+            transform: translateX(-50%);
+            width: 180px;
+            z-index: 10;
+        }
+
+        .mobile-content {
+            height: 100%;
+            overflow-y: auto; /* Allow scrolling within fixed container */
+            position: relative;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="page-background bg-pattern-dots">
+        <div class="gradient-circle circle-1 animate-pulse"></div>
+        <div class="gradient-circle circle-2 animate-pulse"></div>
+        <div class="gradient-circle circle-3 animate-pulse"></div>
+    </div>
+
+    <div id="theme-toggle" class="fixed top-4 right-4 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg z-50 cursor-pointer transition-all hover:shadow-xl">
+        <i data-feather="moon" class="h-5 w-5 text-gray-700 dark:text-gray-300 dark-mode-toggle-icon"></i>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+    <div class="loading-indicator" id="loading-indicator"></div>
+
+    <div id="app" class="flex justify-center items-center p-4 py-10">
+        <div id="content" class="w-full max-w-md">
+            <!-- Mobile frame wrapper -->
+            <div class="mobile-frame">
+                <div class="mobile-notch"></div>
+                <div class="mobile-content">
+                    <!-- Content will be loaded here -->
+                    <div id="page-content" class="p-2">
+                        <div class="flex justify-center items-center h-full">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Project links -->
+            <div class="mt-8 text-center">
+                <p class="text-sm text-gray-600 mb-2">Userverse UI - Mobile User Management Interface</p>
+                <div class="flex justify-center space-x-4 mb-6">
+                    <a href="userverse-ui/README.md" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">View Documentation</a>
+                    <a href="https://github.com/denyDeus/BongoTech" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">GitHub Repository</a>
+                </div>
+                <p class="text-xs text-gray-500 mb-2">Demo Preview:</p>
+                <div class="flex justify-center">
+                    <img src="userverse-ui/assets/demo2.gif" alt="Demo Preview" class="w-full max-w-sm rounded-lg shadow-md">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="userverse-ui/js/main.js"></script>
+    <script>
+        // Initialize Feather icons
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+            
+            // Setup theme toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = document.querySelector('.dark-mode-toggle-icon');
+            
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                
+                if (document.body.classList.contains('dark-mode')) {
+                    feather.replace(themeIcon, { name: 'sun' });
+                } else {
+                    feather.replace(themeIcon, { name: 'moon' });
+                }
+                
+                // Update state if main.js is loaded
+                if (typeof state !== 'undefined') {
+                    state.darkMode = document.body.classList.contains('dark-mode');
+                }
+            });
+
+            // Create particle elements
+            createParticles();
+            
+            // Initialize app if main.js is loaded
+            if (typeof initApp === 'function') {
+                initApp();
+            }
+        });
+
+        // Create floating particles
+        function createParticles() {
+            const numParticles = 20;
+            const container = document.querySelector('.page-background');
+
+            for (let i = 0; i < numParticles; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle', 'float');
+                
+                // Random size between 5px and 15px
+                const size = Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                
+                // Random color
+                const colors = ['#4f46e5', '#7c3aed', '#2dd4bf', '#f59e0b', '#10b981'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.backgroundColor = color;
+                
+                // Random opacity
+                particle.style.opacity = (Math.random() * 0.3 + 0.1).toString();
+                
+                // Random animation delay
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Show toast notification function for use globally
+        function showToast(message, type = 'info', duration = 3000) {
+            const container = document.getElementById('toast-container');
+            
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            // Create icon based on type
+            let iconName;
+            switch(type) {
+                case 'success': iconName = 'check-circle'; break;
+                case 'error': iconName = 'alert-circle'; break;
+                case 'warning': iconName = 'alert-triangle'; break;
+                default: iconName = 'info'; break;
+            }
+            
+            toast.innerHTML = `
+                <i data-feather="${iconName}" class="h-5 w-5 mr-2"></i>
+                <p>${message}</p>
+            `;
+            
+            // Add to container
+            container.appendChild(toast);
+            
+            // Replace with Feather icon
+            feather.replace();
+            
+            // Set timeout to remove toast
+            setTimeout(() => {
+                toast.classList.add('toast-slide-out');
+                setTimeout(() => {
+                    container.removeChild(toast);
+                }, 300);
+            }, duration);
+            
+            return toast;
+        }
+    </script>
+</body>
+</html> 
